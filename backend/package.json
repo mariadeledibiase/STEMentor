@@ -8,6 +8,9 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "setup": "node db/setup.js",
+    "predev": "node db/setup.js",
+    "prestart": "node db/setup.js",
     "start": "node server.js",
     "dev": "node --watch server.js"
   },

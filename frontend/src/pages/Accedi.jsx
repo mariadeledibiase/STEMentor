@@ -57,7 +57,7 @@ function Accedi() {
   return (
     <div className="registrazione-page">
       <div className="registrazione-card">
-        <h1>Bentornatǝ</h1>
+        <h1>Bentornata</h1>
         <p className="section-subtitle">
           Accedi per ritrovare le tue conversazioni.
         </p>
