@@ -13,25 +13,25 @@ const MENTOR_HOME = [
   {
     nome: 'Ada Lovelace',
     disciplina: 'Informatica e matematica',
-    immagine: '/immagini/ada/ada-talk-1.png',
+    immagine: '/immagini/ada/base_idle.jpg',
     colore: '#8C82E8',
   },
   {
     nome: 'Marie Curie',
     disciplina: 'Fisica e chimica',
-    immagine: '/immagini/marie/marie-talk-1.png',
+    immagine: '/immagini/marie/base_idle.jpg',
     colore: '#F49A86',
   },
   {
     nome: 'Margherita Hack',
     disciplina: 'Astrofisica e spazio',
-    immagine: '/immagini/margherita/margherita-talk-1.png',
+    immagine: '/immagini/margherita/margherita-home.jpg',
     colore: '#71C9C2',
   },
   {
     nome: 'Samantha Cristoforetti',
     disciplina: 'Ingegneria e progettazione',
-    immagine: '/immagini/samantha/samantha-talk-1.png',
+    immagine: '/immagini/samantha/samantha-home.jpg',
     colore: '#E7B85B',
   },
 ];

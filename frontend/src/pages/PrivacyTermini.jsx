@@ -9,7 +9,7 @@ function PrivacyTermini() {
         <p>
           STEMentor è un prototipo sviluppato nell'ambito di una tesi di laurea
           (Università di Camerino), con l'obiettivo di aiutare studentesse di
-          scuola media e superiore a orientarsi verso le discipline STEM
+          Scuola Secondaria di primo grado e Scuola Secondaria di secondo grado a orientarsi verso le discipline STEM
           (Scienza, Tecnologia, Ingegneria, Matematica).
         </p>
       </section>
@@ -44,6 +44,16 @@ function PrivacyTermini() {
           imprecisioni: non sostituiscono un vero consulente di orientamento
           scolastico.
         </p>
+        <p>
+          Per generare le risposte, i messaggi della conversazione, la tua età
+          e il tuo livello scolastico vengono inviati a Google (Gemini). La
+          voce delle mentor è prodotta da un servizio di sintesi vocale di
+          Microsoft (Azure AI Speech), a cui viene inviato solo il testo della
+          risposta da leggere. Il tuo nome e la tua email non vengono inviati
+          a nessuno dei due servizi. Per questo motivo ti consigliamo di non
+          scrivere nella chat dati personali (come cognome, indirizzo o
+          numeri di telefono).
+        </p>
       </section>
 
       <section>
@@ -59,10 +69,11 @@ function PrivacyTermini() {
         <h2>6. I tuoi diritti</h2>
         <p>
           Puoi in qualsiasi momento modificare i tuoi dati dalla pagina{' '}
-          <a href="/profilo">Profilo</a>. Per richiedere la cancellazione
-          completa del tuo account e dei tuoi dati, contatta chi gestisce
-          questo prototipo (funzionalità di autocancellazione prevista come
-          sviluppo futuro).
+          <a href="/profilo">Profilo</a>. Da lì puoi anche eliminare
+          definitivamente il tuo account, inserendo la password: verranno
+          cancellati il profilo, tutte le conversazioni e i risultati del
+          quiz. Puoi inoltre eliminare la singola conversazione con una
+          mentor direttamente dalla pagina della chat.
         </p>
       </section>
 

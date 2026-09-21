@@ -7,7 +7,7 @@ import db from './database.js';
 const utenteTest = {
   nome: 'Utente di prova',
   eta: 17,
-  livello_scolastico: 'scuola_superiore',
+  livello_scolastico: 'scuola_secondaria_secondo_grado',
   indirizzo_scolastico: 'Liceo scientifico',
   consenso_genitoriale: 1,
 };

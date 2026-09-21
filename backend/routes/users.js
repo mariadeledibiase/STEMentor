@@ -21,6 +21,13 @@ function validaEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Stessi valori del CHECK in schema.sql. Validarli qui evita che un valore
+// sbagliato arrivi fino al database e produca un 500 generico invece di un
+// 400 con un messaggio chiaro.
+const LIVELLI_SCOLASTICI_VALIDI = [
+  'scuola_secondaria_primo_grado',
+  'scuola_secondaria_secondo_grado'
+];
 // POST /api/users -> registrazione nuovo utente (§3.2), con email + password
 router.post('/', (req, res) => {
   const { nome, email, password, eta, livello_scolastico, indirizzo_scolastico, consenso_genitoriale } = req.body;
@@ -31,6 +38,10 @@ router.post('/', (req, res) => {
 
   if (!validaEmail(email)) {
     return res.status(400).json({ errore: 'Email non valida.' });
+  }
+
+  if (!LIVELLI_SCOLASTICI_VALIDI.includes(livello_scolastico)) {
+    return res.status(400).json({ errore: 'Livello scolastico non valido.' });
   }
 
   if (password.length < 8) {
@@ -203,6 +214,10 @@ router.put('/:id', (req, res) => {
     return res.status(400).json({ errore: 'Nome, età e livello scolastico sono obbligatori.' });
   }
 
+  if (!LIVELLI_SCOLASTICI_VALIDI.includes(livello_scolastico)) {
+    return res.status(400).json({ errore: 'Livello scolastico non valido.' });
+  }
+
   db.prepare(`
     UPDATE users SET nome = ?, eta = ?, livello_scolastico = ?, indirizzo_scolastico = ?
     WHERE id = ?
@@ -213,6 +228,100 @@ router.put('/:id', (req, res) => {
   ).get(req.params.id);
 
   res.json(utenteAggiornato);
+});
+// DELETE /api/users/:id -> elimina definitivamente l'account
+// Per sicurezza richiede la password attuale.
+// Vengono eliminati anche tutti i dati collegati all'utente.
+router.delete('/:id', (req, res) => {
+  const { password } = req.body;
+  const userId = req.params.id;
+
+  if (!password) {
+    return res.status(400).json({
+      errore: 'Inserisci la password per confermare l’eliminazione.'
+    });
+  }
+
+  const utente = db
+    .prepare('SELECT * FROM users WHERE id = ?')
+    .get(userId);
+
+  if (!utente) {
+    return res.status(404).json({
+      errore: 'Utente non trovato.'
+    });
+  }
+
+  if (!verificaPassword(password, utente.password_hash)) {
+    return res.status(401).json({
+      errore: 'Password non corretta.'
+    });
+  }
+
+  try {
+    // node:sqlite (il modulo nativo usato in questo progetto) NON ha un
+    // metodo .transaction() di comodo come better-sqlite3 -- va aperta e
+    // chiusa la transazione a mano con BEGIN/COMMIT, con ROLLBACK in caso
+    // di errore. Stesso identico effetto: o va tutto a buon fine, o niente
+    // viene eliminato.
+    db.exec('BEGIN');
+
+    // 1. Elimina eventuali token per il recupero password
+    db.prepare(`
+      DELETE FROM password_resets
+      WHERE user_id = ?
+    `).run(userId);
+
+    // 2. Elimina tutti i messaggi delle conversazioni dell'utente
+    db.prepare(`
+      DELETE FROM messages
+      WHERE conversation_id IN (
+        SELECT id
+        FROM conversations
+        WHERE user_id = ?
+      )
+    `).run(userId);
+
+    // 3. Elimina tutte le conversazioni
+    db.prepare(`
+      DELETE FROM conversations
+      WHERE user_id = ?
+    `).run(userId);
+
+    // 4. Elimina i risultati del quiz di orientamento. Senza questo passaggio
+    //    la chiave esterna quiz_results.user_id -> users.id bloccava
+    //    l'eliminazione (errore 500) per chiunque avesse fatto il quiz.
+    db.prepare(`
+      DELETE FROM quiz_results
+      WHERE user_id = ?
+    `).run(userId);
+
+    // 5. Elimina definitivamente l'utente
+    db.prepare(`
+      DELETE FROM users
+      WHERE id = ?
+    `).run(userId);
+
+    db.exec('COMMIT');
+
+    res.json({
+      successo: true,
+      messaggio: 'Account eliminato definitivamente.'
+    });
+
+  } catch (errore) {
+
+    db.exec('ROLLBACK');
+
+    console.error(
+      'Errore durante eliminazione account:',
+      errore
+    );
+
+    res.status(500).json({
+      errore: 'Non è stato possibile eliminare l’account.'
+    });
+  }
 });
 
 export default router;

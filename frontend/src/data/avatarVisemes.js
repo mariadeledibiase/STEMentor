@@ -1,49 +1,40 @@
+import {
+  ADA_MOTORE,
+  MARIE_MOTORE,
+  MARGHERITA_MOTORE,
+  SAMANTHA_MOTORE,
+} from '../avatar/scientists.js';
+
+// Configurazione grafica di ogni mentor, indicizzata per nome (lo stesso
+// nome della tabella `avatars` del database).
+//   colore        colore di accento dell'interfaccia
+//   motore        avatar a layer (occhi, bocca e pose separati): vedi scientists.js
+//   figuraIntera  mostrata a figura intera all'apertura della chat, finche'
+//                 non inizia il dialogo (e di nuovo quando la conversazione
+//                 viene eliminata)
 export const AVATAR_VISEMI = {
+
   'Ada Lovelace': {
-    immagineIdle: '/immagini/ada/ada-idle.png',
-    immagineGallery: '/immagini/ada/ada-talk-1.png',
-    framesParlato: [
-      '/immagini/ada/ada-talk-1.png',
-      '/immagini/ada/ada-talk-2.png',
-      '/immagini/ada/ada-talk-3.png',
-      '/immagini/ada/ada-talk-2.png',
-    ],
     colore: '#7B6EF6',
+    motore: ADA_MOTORE,
+    figuraIntera: '/immagini/ada/ada-figura-intera.jpg',
   },
 
   'Marie Curie': {
-    immagineIdle: '/immagini/marie/marie-idle.png',
-    immagineGallery: '/immagini/marie/marie-talk-1.png',
-    framesParlato: [
-      '/immagini/marie/marie-talk-1.png',
-      '/immagini/marie/marie-talk-2.png',
-      '/immagini/marie/marie-talk-3.png',
-      '/immagini/marie/marie-talk-2.png',
-    ],
     colore: '#FF7A45',
+    motore: MARIE_MOTORE,
+    figuraIntera: '/immagini/marie/marie-figura-intera.jpg',
   },
 
   'Margherita Hack': {
-    immagineIdle: '/immagini/margherita/margherita-idle.png',
-    immagineGallery: '/immagini/margherita/margherita-talk-1.png',
-    framesParlato: [
-      '/immagini/margherita/margherita-talk-1.png',
-      '/immagini/margherita/margherita-talk-2.png',
-      '/immagini/margherita/margherita-talk-3.png',
-      '/immagini/margherita/margherita-talk-2.png',
-    ],
     colore: '#4ECDC4',
+    motore: MARGHERITA_MOTORE,
+    figuraIntera: '/immagini/margherita/margherita-figura-intera.jpg',
   },
 
   'Samantha Cristoforetti': {
-    immagineIdle: '/immagini/samantha/samantha-idle.png',
-    immagineGallery: '/immagini/samantha/samantha-talk-1.png',
-    framesParlato: [
-      '/immagini/samantha/samantha-talk-1.png',
-      '/immagini/samantha/samantha-talk-2.png',
-      '/immagini/samantha/samantha-talk-3.png',
-      '/immagini/samantha/samantha-talk-2.png',
-    ],
     colore: '#FFC24B',
+    motore: SAMANTHA_MOTORE,
+    figuraIntera: '/immagini/samantha/samantha-figura-intera.jpg',
   },
 };

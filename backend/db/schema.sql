@@ -15,7 +15,12 @@ CREATE TABLE IF NOT EXISTS users (
                                      email TEXT,
                                      password_hash TEXT,
                                      eta INTEGER NOT NULL,
-                                     livello_scolastico TEXT NOT NULL CHECK(livello_scolastico IN ('scuola_media', 'scuola_superiore')),
+                                     livello_scolastico TEXT NOT NULL CHECK(
+                                     livello_scolastico IN (
+                                     'scuola_secondaria_primo_grado',
+                                     'scuola_secondaria_secondo_grado'
+)
+    ),
     indirizzo_scolastico TEXT,
     consenso_genitoriale INTEGER DEFAULT 0,  -- 1 se acquisito (necessario per under-14, §3.3)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP

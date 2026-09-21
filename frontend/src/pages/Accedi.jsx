@@ -31,10 +31,26 @@ function Accedi() {
         body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      const dati = await risposta.json();
+      const testo = await risposta.text();
+
+      let dati = {};
+
+      if (testo) {
+        try {
+          dati = JSON.parse(testo);
+        } catch {
+          throw new Error('Il server ha restituito una risposta non valida.');
+        }
+      }
 
       if (!risposta.ok) {
-        throw new Error(dati.errore || 'Accesso non riuscito.');
+        throw new Error(
+          dati.errore || `Accesso non riuscito. Errore ${risposta.status}.`
+        );
+      }
+
+      if (!testo) {
+        throw new Error('Il server non ha restituito i dati dell’utente.');
       }
 
       setUtente({

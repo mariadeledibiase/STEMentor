@@ -17,7 +17,9 @@ function Registrazione() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eta, setEta] = useState('');
-  const [livelloScolastico, setLivelloScolastico] = useState('scuola_superiore');
+  const [livelloScolastico, setLivelloScolastico] = useState(
+   'scuola_secondaria_secondo_grado'
+ );
   const [indirizzoScolastico, setIndirizzoScolastico] = useState('');
   const [consensoGenitoriale, setConsensoGenitoriale] = useState(false);
   const [accettaTermini, setAccettaTermini] = useState(false);
@@ -103,7 +105,7 @@ function Registrazione() {
 
         <form onSubmit={handleSubmit} className="registrazione-form">
           <label>
-            Nome
+            Nome e Cognome
             <input
               type="text"
               value={nome}
@@ -154,8 +156,13 @@ function Registrazione() {
               onChange={(e) => setLivelloScolastico(e.target.value)}
               disabled={inviando}
             >
-              <option value="scuola_media">Scuola media</option>
-              <option value="scuola_superiore">Scuola superiore</option>
+             <option value="scuola_secondaria_primo_grado">
+               Scuola Secondaria di primo grado
+             </option>
+
+             <option value="scuola_secondaria_secondo_grado">
+               Scuola Secondaria di secondo grado
+             </option>
             </select>
           </label>
 

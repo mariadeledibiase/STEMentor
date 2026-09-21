@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 // di laurea (es. L-31), con gli sbocchi professionali collegati.
 
 const TIPI = [
-  { valore: 'scuola', etichetta: 'Scuole superiori' },
+  { valore: 'scuola', etichetta: 'Scuola Secondaria di secondo grado' },
   { valore: 'universita', etichetta: 'Università' },
   { valore: 'carriera', etichetta: 'Percorsi di carriera' },
 ];
@@ -71,21 +71,21 @@ function Maps() {
 
       {tipoAttivo === 'scuola' && (
         <div className="maps-filtri-riga">
-          <select value={filtroTipoIstituto} onChange={(e) => setFiltroTipoIstituto(e.target.value)}>
+          <select aria-label="Filtra per tipo di istituto" value={filtroTipoIstituto} onChange={(e) => setFiltroTipoIstituto(e.target.value)}>
             <option value="">Tutti i tipi di istituto</option>
             {opzioniFiltro.tipiIstituto.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
 
-          <select value={filtroIndirizzo} onChange={(e) => setFiltroIndirizzo(e.target.value)}>
+          <select aria-label="Filtra per indirizzo di studio" value={filtroIndirizzo} onChange={(e) => setFiltroIndirizzo(e.target.value)}>
             <option value="">Tutti gli indirizzi</option>
             {opzioniFiltro.indirizzi.map((i) => (
               <option key={i} value={i}>{i}</option>
             ))}
           </select>
 
-          <select value={filtroRegione} onChange={(e) => setFiltroRegione(e.target.value)}>
+          <select aria-label="Filtra per regione" value={filtroRegione} onChange={(e) => setFiltroRegione(e.target.value)}>
             <option value="">Tutta Italia</option>
             {opzioniFiltro.regioni.map((r) => (
               <option key={r} value={r}>{r}</option>
@@ -96,14 +96,14 @@ function Maps() {
 
       {tipoAttivo === 'universita' && (
         <div className="maps-filtri-riga">
-          <select value={filtroIndirizzo} onChange={(e) => setFiltroIndirizzo(e.target.value)}>
+          <select aria-label="Filtra per classe di laurea" value={filtroIndirizzo} onChange={(e) => setFiltroIndirizzo(e.target.value)}>
             <option value="">Tutte le classi di laurea</option>
             {opzioniFiltro.indirizzi.map((i) => (
               <option key={i} value={i}>{i}</option>
             ))}
           </select>
 
-          <select value={filtroRegione} onChange={(e) => setFiltroRegione(e.target.value)}>
+          <select aria-label="Filtra per regione" value={filtroRegione} onChange={(e) => setFiltroRegione(e.target.value)}>
             <option value="">Tutta Italia</option>
             {opzioniFiltro.regioni.map((r) => (
               <option key={r} value={r}>{r}</option>

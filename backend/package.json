@@ -12,11 +12,16 @@
     "predev": "node db/setup.js",
     "prestart": "node db/setup.js",
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "node --test tests/api.test.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "microsoft-cognitiveservices-speech-sdk": "^1.51.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
   }
 }

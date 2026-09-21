@@ -23,18 +23,22 @@ const SCUOLE_SUPERIORI_PER_AREA = {
   informatica: [
     { nome: 'Liceo Scientifico - opzione Scienze Applicate', descrizione: 'Più laboratorio e informatica rispetto al liceo scientifico tradizionale, mantenendo una solida base scientifica.' },
     { nome: 'Istituto Tecnico Tecnologico - indirizzo Informatica e Telecomunicazioni', descrizione: 'Molta pratica fin da subito: programmazione, reti, sistemi.' },
+    { nome: 'Istituto Tecnico Tecnologico - indirizzo Elettronica ed Elettrotecnica', descrizione: 'Utile se ti interessano anche i circuiti e l\'hardware, non solo il software.' },
   ],
   fisica_chimica: [
     { nome: 'Liceo Scientifico (tradizionale)', descrizione: 'Buon equilibrio tra teoria e laboratorio, ottima base per proseguire in ambito scientifico all\'università.' },
     { nome: 'Istituto Tecnico Tecnologico - indirizzo Chimica, Materiali e Biotecnologie', descrizione: 'Tanto laboratorio pratico di chimica fin dal primo biennio.' },
+    { nome: 'Liceo Scientifico - opzione Scienze Applicate', descrizione: 'Più laboratorio pratico, utile se ti piace sperimentare oltre alla teoria.' },
   ],
   astrofisica: [
     { nome: 'Liceo Scientifico (tradizionale)', descrizione: 'La base di fisica e matematica più solida per chi vuole poi studiare astrofisica all\'università.' },
     { nome: 'Liceo Scientifico - opzione Scienze Applicate', descrizione: 'Utile se ti piace anche la parte più pratica/informatica accanto alla fisica.' },
+    { nome: 'Istituto Tecnico Tecnologico - indirizzo Elettronica ed Elettrotecnica', descrizione: 'Utile se ti interessa anche la parte più tecnica/strumentale (telescopi, sensori).' },
   ],
   ingegneria: [
     { nome: 'Istituto Tecnico Tecnologico - indirizzo Meccanica, Meccatronica ed Energia', descrizione: 'Molta pratica su meccanica e progettazione, utile anche per entrare subito nel mondo del lavoro.' },
     { nome: 'Liceo Scientifico (tradizionale)', descrizione: 'Base più teorica, adatta se punti a un\'università di ingegneria selettiva.' },
+    { nome: 'Istituto Tecnico Tecnologico - indirizzo Costruzioni, Ambiente e Territorio', descrizione: 'Utile se ti interessa progettare edifici e infrastrutture più che macchine.' },
   ],
 };
 
@@ -43,18 +47,22 @@ const UNIVERSITA_PER_AREA = {
   informatica: [
     { nome: 'Laurea in Informatica', descrizione: 'Programmazione, algoritmi, intelligenza artificiale, sviluppo software.' },
     { nome: 'Laurea in Ingegneria Informatica', descrizione: 'Come Informatica, ma con più basi ingegneristiche (elettronica, sistemi).' },
+    { nome: 'Laurea in Ingegneria e Scienze Informatiche', descrizione: 'Un mix tra informatica e ingegneria, con basi più forti su sistemi, reti e sicurezza informatica.' },
   ],
   fisica_chimica: [
     { nome: 'Laurea in Fisica', descrizione: 'Studio dei fenomeni naturali, dalla scala subatomica all\'universo.' },
     { nome: 'Laurea in Chimica', descrizione: 'Struttura della materia, reazioni, nuovi materiali.' },
+    { nome: 'Laurea in Scienza dei Materiali', descrizione: 'Studio e progettazione di nuovi materiali, al confine tra fisica, chimica e ingegneria.' },
   ],
   astrofisica: [
     { nome: 'Laurea in Astronomia/Astrofisica', descrizione: 'Studio di stelle, galassie, cosmologia (spesso un curriculum dentro Fisica).' },
     { nome: 'Laurea in Fisica - curriculum Astrofisico', descrizione: 'Base di fisica generale con specializzazione verso lo spazio.' },
+    { nome: 'Laurea in Fisica - curriculum Astroparticellare e Cosmologia', descrizione: 'Per chi si interessa non solo alle stelle ma anche alle particelle e all\'origine dell\'universo.' },
   ],
   ingegneria: [
     { nome: 'Laurea in Ingegneria Aerospaziale', descrizione: 'Progettazione di aerei, satelliti, veicoli spaziali.' },
     { nome: 'Laurea in Ingegneria Meccanica', descrizione: 'Progettazione di macchine, motori, sistemi meccanici in generale.' },
+    { nome: 'Laurea in Ingegneria Energetica', descrizione: 'Progettazione di impianti e sistemi per la produzione e gestione dell\'energia.' },
   ],
 };
 
@@ -113,6 +121,87 @@ const DOMANDE_MEDIA = [
       { testo: 'Visita a un laboratorio scientifico', area: 'fisica_chimica' },
       { testo: 'Visita a un planetario o osservatorio', area: 'astrofisica' },
       { testo: 'Visita a una fabbrica o un museo dei trasporti', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Se potessi creare qualcosa di nuovo, cosa ti piacerebbe inventare?',
+    opzioni: [
+      { testo: 'Un\'app o un gioco per il telefono', area: 'informatica' },
+      { testo: 'Un materiale con proprietà speciali', area: 'fisica_chimica' },
+      { testo: 'Un modo per viaggiare più veloce nello spazio', area: 'astrofisica' },
+      { testo: 'Un robot o una macchina che aiuta le persone', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale scienziata ti piacerebbe intervistare?',
+    opzioni: [
+      { testo: 'Un\'esperta di intelligenza artificiale', area: 'informatica' },
+      { testo: 'Una scienziata che studia sostanze e reazioni', area: 'fisica_chimica' },
+      { testo: 'Un\'astronauta o un\'astrofisica', area: 'astrofisica' },
+      { testo: 'Un\'ingegnera che progetta macchine o edifici', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Cosa ti piacerebbe imparare a fare meglio quest\'anno?',
+    opzioni: [
+      { testo: 'Programmare o creare un sito', area: 'informatica' },
+      { testo: 'Fare esperimenti con più precisione', area: 'fisica_chimica' },
+      { testo: 'Riconoscere stelle e costellazioni', area: 'astrofisica' },
+      { testo: 'Disegnare progetti tecnici o costruire modellini', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale museo ti piacerebbe visitare?',
+    opzioni: [
+      { testo: 'Un museo della scienza e della tecnologia digitale', area: 'informatica' },
+      { testo: 'Un museo della chimica o della fisica', area: 'fisica_chimica' },
+      { testo: 'Un planetario o un museo dell\'astronomia', area: 'astrofisica' },
+      { testo: 'Un museo dei trasporti o delle macchine', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'In una gara di robotica scolastica, quale ruolo sceglieresti?',
+    opzioni: [
+      { testo: 'Programmare il robot', area: 'informatica' },
+      { testo: 'Testare i materiali e i sensori', area: 'fisica_chimica' },
+      { testo: 'Calcolare le traiettorie e i movimenti', area: 'astrofisica' },
+      { testo: 'Costruire la struttura del robot', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale parola ti incuriosisce di più?',
+    opzioni: [
+      { testo: 'Algoritmo', area: 'informatica' },
+      { testo: 'Molecola', area: 'fisica_chimica' },
+      { testo: 'Galassia', area: 'astrofisica' },
+      { testo: 'Meccanismo', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale attività extra-scolastica ti piacerebbe provare?',
+    opzioni: [
+      { testo: 'Un corso di coding o robotica', area: 'informatica' },
+      { testo: 'Un laboratorio di scienze o chimica', area: 'fisica_chimica' },
+      { testo: 'Una visita guidata al planetario', area: 'astrofisica' },
+      { testo: 'Un corso di modellismo o falegnameria', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Se dovessi creare un fumetto, chi sarebbe la protagonista?',
+    opzioni: [
+      { testo: 'Una hacker che risolve misteri col computer', area: 'informatica' },
+      { testo: 'Una scienziata che scopre pozioni ed elementi segreti', area: 'fisica_chimica' },
+      { testo: 'Un\'esploratrice dello spazio', area: 'astrofisica' },
+      { testo: 'Un\'inventrice che costruisce macchine straordinarie', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale domanda ti sei fatta più spesso ultimamente?',
+    opzioni: [
+      { testo: '"Come fa un\'app a capire cosa mi piace?"', area: 'informatica' },
+      { testo: '"Di cosa sono fatte davvero le cose intorno a me?"', area: 'fisica_chimica' },
+      { testo: '"Cosa c\'è oltre le stelle che vediamo?"', area: 'astrofisica' },
+      { testo: '"Come si costruisce un ponte o una macchina?"', area: 'ingegneria' },
     ],
   },
 ];
@@ -174,13 +263,94 @@ const DOMANDE_SUPERIORE = [
       { testo: 'Un\'azienda di ingegneria/manifattura', area: 'ingegneria' },
     ],
   },
+  {
+    testo: 'Quale canale o rivista di divulgazione scientifica segui più volentieri?',
+    opzioni: [
+      { testo: 'Contenuti su programmazione, IA, tecnologia', area: 'informatica' },
+      { testo: 'Contenuti su chimica, nuovi materiali, fisica sperimentale', area: 'fisica_chimica' },
+      { testo: 'Contenuti su astronomia, missioni spaziali, cosmologia', area: 'astrofisica' },
+      { testo: 'Contenuti su ingegneria, progettazione, invenzioni', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Se potessi fare un tirocinio estivo, dove ti piacerebbe andare?',
+    opzioni: [
+      { testo: 'In un\'azienda di sviluppo software', area: 'informatica' },
+      { testo: 'In un laboratorio chimico o fisico di ricerca', area: 'fisica_chimica' },
+      { testo: 'In un centro di ricerca spaziale o un osservatorio', area: 'astrofisica' },
+      { testo: 'In uno studio di progettazione ingegneristica', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale competenza ti piacerebbe sviluppare per prima nella tua carriera?',
+    opzioni: [
+      { testo: 'Scrivere codice in modo efficiente', area: 'informatica' },
+      { testo: 'Condurre esperimenti rigorosi', area: 'fisica_chimica' },
+      { testo: 'Modellare fenomeni su grande scala', area: 'astrofisica' },
+      { testo: 'Progettare e prototipare soluzioni concrete', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale scoperta scientifica recente ti ha colpito di più?',
+    opzioni: [
+      { testo: 'I progressi dell\'intelligenza artificiale', area: 'informatica' },
+      { testo: 'Nuovi materiali o farmaci', area: 'fisica_chimica' },
+      { testo: 'Nuove immagini dell\'universo (es. dai telescopi spaziali)', area: 'astrofisica' },
+      { testo: 'Nuove tecnologie di trasporto o energia', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Se dovessi scegliere un libro di divulgazione scientifica, quale argomento preferiresti?',
+    opzioni: [
+      { testo: 'Come funzionano gli algoritmi e i computer', area: 'informatica' },
+      { testo: 'La struttura della materia e le reazioni chimiche', area: 'fisica_chimica' },
+      { testo: 'La storia dell\'universo e delle stelle', area: 'astrofisica' },
+      { testo: 'Come si progettano macchine e strutture', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Pensando al tuo futuro lavoro, cosa ti motiva di più?',
+    opzioni: [
+      { testo: 'Creare strumenti digitali che le persone usano ogni giorno', area: 'informatica' },
+      { testo: 'Fare ricerca per capire come funziona la materia', area: 'fisica_chimica' },
+      { testo: 'Contribuire a capire meglio l\'universo', area: 'astrofisica' },
+      { testo: 'Costruire soluzioni fisiche concrete a problemi reali', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Se potessi partecipare a una competizione scientifica, quale sceglieresti?',
+    opzioni: [
+      { testo: 'Un hackathon di programmazione', area: 'informatica' },
+      { testo: 'Le Olimpiadi di Chimica', area: 'fisica_chimica' },
+      { testo: 'Le Olimpiadi di Astronomia e Astrofisica', area: 'astrofisica' },
+      { testo: 'Una competizione di robotica o ingegneria', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Quale strumento useresti più volentieri in un laboratorio?',
+    opzioni: [
+      { testo: 'Un computer per scrivere ed eseguire codice', area: 'informatica' },
+      { testo: 'Provette e reagenti chimici', area: 'fisica_chimica' },
+      { testo: 'Un telescopio', area: 'astrofisica' },
+      { testo: 'Utensili per costruire un prototipo', area: 'ingegneria' },
+    ],
+  },
+  {
+    testo: 'Guardando avanti di 10 anni, in quale ambiente ti vedi lavorare?',
+    opzioni: [
+      { testo: 'In ufficio o da remoto, a sviluppare software', area: 'informatica' },
+      { testo: 'In un laboratorio di ricerca chimico o fisico', area: 'fisica_chimica' },
+      { testo: 'In un centro di ricerca spaziale o un osservatorio', area: 'astrofisica' },
+      { testo: 'In un\'officina o uno stabilimento produttivo', area: 'ingegneria' },
+    ],
+  },
 ];
 
 function Quiz() {
   const navigate = useNavigate();
   const [utente] = useState(() => getUtente());
 
-  const DOMANDE = utente?.livello_scolastico === 'scuola_media' ? DOMANDE_MEDIA : DOMANDE_SUPERIORE;
+  const DOMANDE = utente?.livello_scolastico === 'scuola_secondaria_primo_grado' ? DOMANDE_MEDIA : DOMANDE_SUPERIORE;
 
   const [indiceDomanda, setIndiceDomanda] = useState(0);
   const [punteggi, setPunteggi] = useState({});
@@ -255,7 +425,7 @@ function Quiz() {
     const areaMigliore = areeOrdinate[0]?.[0];
     const infoAreaMigliore = areaMigliore ? AREE[areaMigliore] : null;
 
-    const eScuolaMedia = utente.livello_scolastico === 'scuola_media';
+    const eScuolaMedia = utente.livello_scolastico === 'scuola_secondaria_primo_grado'
     const percorsiConsigliati = areaMigliore
       ? (eScuolaMedia ? SCUOLE_SUPERIORI_PER_AREA : UNIVERSITA_PER_AREA)[areaMigliore]
       : [];
@@ -367,4 +537,3 @@ function Quiz() {
 }
 
 export default Quiz;
-

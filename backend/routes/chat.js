@@ -3,24 +3,37 @@ import db from '../db/database.js';
 
 const router = express.Router();
 
-// Elenco di riferimento (stesso usato nel Quiz) per dare a Gemini nomi
-// concreti e reali da suggerire, invece di lasciarlo generico o a rischio
-// di inventare nomi di corsi/scuole che non esistono.
-const PERCORSI_DI_RIFERIMENTO = `
+// Elenco di riferimento per dare a Gemini nomi concreti e reali da
+// suggerire, invece di lasciarlo generico o a rischio di inventare nomi di
+// corsi/scuole che non esistono.
+// ATTENZIONE: i nomi devono coincidere ESATTAMENTE con quelli usati nel
+// Quiz (frontend/src/pages/Quiz.jsx: SCUOLE_SUPERIORI_PER_AREA e
+// UNIVERSITA_PER_AREA), così quiz e chat consigliano gli stessi percorsi.
+// Il test "coerenza con il Quiz" in tests/api.test.js segnala se le due
+// liste si disallineano.
+export const PERCORSI_DI_RIFERIMENTO = `
 Scuole superiori scientifiche reali in Italia (da consigliare a chi è alle medie):
 - Liceo Scientifico (tradizionale)
 - Liceo Scientifico - opzione Scienze Applicate
 - Istituto Tecnico Tecnologico - indirizzo Informatica e Telecomunicazioni
+- Istituto Tecnico Tecnologico - indirizzo Elettronica ed Elettrotecnica
 - Istituto Tecnico Tecnologico - indirizzo Chimica, Materiali e Biotecnologie
 - Istituto Tecnico Tecnologico - indirizzo Meccanica, Meccatronica ed Energia
+- Istituto Tecnico Tecnologico - indirizzo Costruzioni, Ambiente e Territorio
 
 Corsi di laurea scientifici reali in Italia (da consigliare a chi è alle superiori):
-- Informatica / Ingegneria Informatica
-- Fisica
-- Chimica
-- Astronomia/Astrofisica (spesso curriculum dentro Fisica)
-- Ingegneria Aerospaziale
-- Ingegneria Meccanica
+- Laurea in Informatica
+- Laurea in Ingegneria Informatica
+- Laurea in Ingegneria e Scienze Informatiche
+- Laurea in Fisica
+- Laurea in Chimica
+- Laurea in Scienza dei Materiali
+- Laurea in Astronomia/Astrofisica
+- Laurea in Fisica - curriculum Astrofisico
+- Laurea in Fisica - curriculum Astroparticellare e Cosmologia
+- Laurea in Ingegneria Aerospaziale
+- Laurea in Ingegneria Meccanica
+- Laurea in Ingegneria Energetica
 `;
 
 // POST /api/chat -> invia un messaggio a un avatar e riceve la risposta dell'IA
@@ -64,19 +77,23 @@ router.post('/', async (req, res) => {
 
   try {
     // 5. Costruisce il prompt completo: system_prompt dell'avatar + adattamento per età
-    const isScuolaMedia = user.livello_scolastico === 'scuola_media';
+   const isSecondariaPrimoGrado =
+     user.livello_scolastico === 'scuola_secondaria_primo_grado';
 
     const promptSistema = `${avatar.system_prompt}
 
-L'utente con cui stai parlando ha ${user.eta} anni e frequenta ${isScuolaMedia ? 'la scuola media' : 'la scuola superiore'}.
+L'utente con cui stai parlando ha ${user.eta} anni e frequenta ${isSecondariaPrimoGrado
+                                                                   ? 'la Scuola Secondaria di primo grado'
+                                                                   : 'la Scuola Secondaria di secondo grado'}}.
 
 SCOPO DELLA CONVERSAZIONE (fondamentale):
 Questa NON è una chiacchierata generica. Il tuo scopo è aiutare concretamente questa persona
 nell'orientamento scolastico e lavorativo. Sei una figura di riferimento nel tuo campo (${avatar.disciplina}),
 e la tua storia personale è uno STRUMENTO per dare consigli credibili -- non il contenuto principale
 della conversazione. L'obiettivo finale della conversazione è arrivare a un CONSIGLIO CONCRETO:
-${isScuolaMedia ? 'quale scuola superiore scientifica scegliere' : 'quale corso di laurea scientifico scegliere'}.
-
+${isSecondariaPrimoGrado
+  ? 'quale percorso della Scuola Secondaria di secondo grado scegliere'
+  : 'quale corso di laurea scientifico scegliere'}
 COME GESTIRE IL PRIMO MESSAGGIO / UN SALUTO GENERICO ("ciao" ecc.):
 Rispondi SOLO con: chi sei in una riga (nome + campo), perché sei lì (aiutarla a orientarsi), e
 una domanda sui suoi interessi. NIENTE aneddoti storici, NIENTE dettagli biografici, NIENTE
@@ -106,7 +123,7 @@ STILE DI RISPOSTA (regola più importante, vale SEMPRE):
 - NON usare linguaggio poetico, ricercato o metaforico.
 
 TONO PER FASCIA D'ETÀ:
-${isScuolaMedia
+${isSecondariaPrimoGrado
     ? '- Ha 11-13 anni: linguaggio semplice e diretto, esempi concreti e vicini alla sua esperienza quotidiana (scuola, videogiochi, oggetti che usa).'
     : '- È alle superiori: puoi essere più specifica su materie, esami, sbocchi lavorativi e percorsi universitari, mantenendo un tono naturale e diretto.'}
 
@@ -155,6 +172,17 @@ per capire meglio i suoi interessi, un aspetto alla volta.
     });
 
     const dati = await rispostaIA.json();
+
+    // NUOVO: se Gemini ha rifiutato la richiesta (rate limit, quota, chiave
+    // non valida, ecc.), la risposta HTTP non è "ok" e dati.candidates sarà
+    // assente. Prima questo veniva mascherato con un messaggio generico e
+    // un finto status 200 -- ora lo logghiamo come errore vero, così emerge
+    // nei log del server invece di sembrare una risposta "normale".
+    if (!rispostaIA.ok) {
+      console.error('Gemini ha risposto con un errore:', rispostaIA.status, JSON.stringify(dati));
+      throw new Error(`Gemini ha risposto con status ${rispostaIA.status} (probabile rate limit o quota esaurita).`);
+    }
+
     let testoRisposta = dati.candidates?.[0]?.content?.parts?.[0]?.text
       || 'Mi dispiace, non sono riuscita a rispondere in questo momento.';
 
@@ -219,6 +247,34 @@ router.get('/esistente/:user_id/:avatar_id', (req, res) => {
   ).all(conversazione.id);
 
   res.json({ conversation_id: conversazione.id, messaggi });
+});
+
+// DELETE /api/chat/:conversation_id -> elimina definitivamente una conversazione
+// e tutti i suoi messaggi. Richiede user_id in query string per verificare che
+// la conversazione appartenga davvero a chi la sta cancellando (altrimenti
+// chiunque potrebbe eliminare le chat di un'altra persona indovinando un id).
+router.delete('/:conversation_id', (req, res) => {
+  const { conversation_id } = req.params;
+  const { user_id } = req.query;
+
+  if (!user_id) {
+    return res.status(400).json({ errore: 'user_id è obbligatorio.' });
+  }
+
+  const conversazione = db.prepare('SELECT * FROM conversations WHERE id = ?').get(conversation_id);
+
+  if (!conversazione) {
+    return res.status(404).json({ errore: 'Conversazione non trovata.' });
+  }
+
+  if (String(conversazione.user_id) !== String(user_id)) {
+    return res.status(403).json({ errore: 'Questa conversazione non appartiene a questo utente.' });
+  }
+
+  db.prepare('DELETE FROM messages WHERE conversation_id = ?').run(conversation_id);
+  db.prepare('DELETE FROM conversations WHERE id = ?').run(conversation_id);
+
+  res.json({ successo: true });
 });
 
 export default router;
